@@ -24,3 +24,16 @@ httpserv [OPTIONS]
 -verbose
       Print all headers
 ```
+
+Per request logging may be enabled by setting `X-Logging-Enabled header`, like:
+
+```
+http localhost:8080 X-Logging-Enabled:true  
+
+```
+
+or
+
+```
+curl -H "X-Logging-Enabled:true" localhost:8080
+```

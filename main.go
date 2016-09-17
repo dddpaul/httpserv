@@ -21,7 +21,8 @@ func main() {
 	}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-		if verbose {
+		_, ok := req.Header["X-Logging-Enabled"]
+		if verbose || ok {
 			log.Printf("Request from [%s]", req.RemoteAddr)
 			for k, v := range req.Header {
 				fmt.Printf("%s: %s\n", k, v)
