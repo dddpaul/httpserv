@@ -1,5 +1,5 @@
 FROM alpine:3.3
-MAINTAINER Pavel Derendyaev <pderendyaev@smile-net.ru>
+MAINTAINER Pavel Derendyaev <pderendyaev@gmail.com>
 
 ADD root /
 
