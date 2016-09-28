@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"bytes"
 )
 
 func main() {
@@ -21,14 +22,15 @@ func main() {
 	}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-		log.Printf("%s %s from [%s]", req.Method, req.RequestURI, req.RemoteAddr)
+		var buf bytes.Buffer
+		buf.WriteString(fmt.Sprintf("%s %s from [%s]\n", req.Method, req.RequestURI, req.RemoteAddr))
 		_, ok := req.Header["X-Logging-Enabled"]
 		if verbose || ok {
 			for k, v := range req.Header {
-				fmt.Printf("%s: %s\n", k, v)
+				buf.WriteString(fmt.Sprintf("%s: %s\n", k, v))
 			}
-			fmt.Println()
 		}
+		log.Println(buf.String())
 		w.Write([]byte(fmt.Sprintf("Response from %s%s", name, port)))
 	})
 	log.Printf("HTTP server is listening on port %s, verbose = %v\n", port, verbose)
