@@ -1,12 +1,12 @@
 package main
 
 import (
+	"bytes"
 	"flag"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
-	"bytes"
 )
 
 func main() {
