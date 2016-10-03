@@ -29,8 +29,9 @@ func main() {
 			for k, v := range req.Header {
 				buf.WriteString(fmt.Sprintf("%s: %s\n", k, v))
 			}
+			buf.WriteString("\n")
 		}
-		log.Println(buf.String())
+		log.Print(buf.String())
 		w.Write([]byte(fmt.Sprintf("Response from %s%s", name, port)))
 	})
 	log.Printf("HTTP server is listening on port %s, verbose = %v\n", port, verbose)
