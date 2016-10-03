@@ -35,5 +35,5 @@ func main() {
 		w.Write([]byte(fmt.Sprintf("Response from %s%s", name, port)))
 	})
 	log.Printf("HTTP server is listening on port %s, verbose = %v\n", port, verbose)
-	http.ListenAndServe(port, nil)
+	log.Fatalln("ListenAndServe:", http.ListenAndServe(port, nil))
 }
