@@ -1,7 +1,7 @@
 .PHONY: all build release
 
 IMAGE=dddpaul/httpserv
-VERSION=1.4
+VERSION=1.5
 
 all: build
 
