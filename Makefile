@@ -1,14 +1,14 @@
 .PHONY: all build release
 
 IMAGE=dddpaul/httpserv
-VERSION=$(shell cat VERSION)
+VERSION=1.4
 
 all: build
 
+build-alpine:
+	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ./bin/httpserv ./main.go
+
 build:
-	@go test
-	@mkdir -p root/bin
-	@CGO_ENABLED=0 go build -o root/bin/httpserv
 	@docker build --tag=${IMAGE} .
 
 debug:

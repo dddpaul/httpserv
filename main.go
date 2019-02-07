@@ -6,20 +6,16 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 )
 
 func main() {
 	var port string
+	var message string
 	var verbose bool
 	flag.BoolVar(&verbose, "verbose", false, "Print all headers")
 	flag.StringVar(&port, "port", ":8080", "Port to listen (prepended by colon), i.e. :8080")
+	flag.StringVar(&message, "message", "HTTP OK", "Server response")
 	flag.Parse()
-
-	name, err := os.Hostname()
-	if err != nil {
-		log.Fatalf("Error: %v\n", err)
-	}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 		var buf bytes.Buffer
@@ -32,7 +28,7 @@ func main() {
 			buf.WriteString("\n")
 		}
 		log.Print(buf.String())
-		w.Write([]byte(fmt.Sprintf("Response from %s%s", name, port)))
+		w.Write([]byte(message))
 	})
 	log.Printf("HTTP server is listening on port %s, verbose = %v\n", port, verbose)
 	log.Fatalln("ListenAndServe:", http.ListenAndServe(port, nil))
