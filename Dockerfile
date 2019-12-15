@@ -1,4 +1,4 @@
-FROM golang:1.11.5 as builder
+FROM golang:1.13.4 as builder
 WORKDIR /go/src/github.com/dddpaul/httpserv
 ADD . ./
 RUN make build-alpine
