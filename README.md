@@ -25,6 +25,8 @@ httpserv [OPTIONS]
         Server response (default "HTTP OK")
   -port string
         Port to listen (prepended by colon), i.e. :8080 (default ":8080")
+  -sleep int
+    	Sleep duration (ms), 0 means no time to sleep
   -verbose
         Print request details
   -headers
