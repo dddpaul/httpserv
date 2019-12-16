@@ -16,7 +16,7 @@ var message string
 var verbose bool
 var headers bool
 
-var stdLog = log.New(os.Stdout, "[" + prefix + "] " , log.LstdFlags)
+var stdLog = log.New(os.Stdout, "["+prefix+"] ", log.LstdFlags)
 
 var app http.Handler = http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 	var buf bytes.Buffer
@@ -42,7 +42,7 @@ func main() {
 	flag.Parse()
 
 	if verbose {
-		 app = logger.New(logger.Options{
+		app = logger.New(logger.Options{
 			Prefix:               prefix,
 			RemoteAddressHeaders: []string{"X-Forwarded-For"},
 			OutputFlags:          log.LstdFlags,
