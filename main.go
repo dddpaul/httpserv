@@ -7,16 +7,14 @@ import (
 	"github.com/unrolled/logger"
 	"log"
 	"net/http"
-	"os"
 )
 
-var prefix = "httpserv"
+var prefix string
 var port string
 var message string
 var verbose bool
 var headers bool
-
-var stdLog = log.New(os.Stdout, "["+prefix+"] ", log.LstdFlags)
+var l *logger.Logger
 
 var app http.Handler = http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 	var buf bytes.Buffer
@@ -27,28 +25,31 @@ var app http.Handler = http.HandlerFunc(func(w http.ResponseWriter, req *http.Re
 			buf.WriteString(fmt.Sprintf("%s: %s, ", k, v))
 		}
 		buf.Truncate(buf.Len() - 2)
-		stdLog.Print(buf.String())
+		l.Print(buf.String())
 	}
 	if _, err := w.Write([]byte(message)); err != nil {
-		stdLog.Println(err)
+		l.Println(err)
 	}
 })
 
 func main() {
+	flag.StringVar(&prefix, "prefix", "httpserv", "Logging prefix")
 	flag.BoolVar(&verbose, "verbose", false, "Print request details")
 	flag.BoolVar(&headers, "headers", false, "Print request headers")
 	flag.StringVar(&port, "port", ":8080", "Port to listen (prepended by colon), i.e. :8080")
 	flag.StringVar(&message, "message", "HTTP OK", "Server response")
 	flag.Parse()
 
+	l = logger.New(logger.Options{
+		Prefix:               prefix,
+		RemoteAddressHeaders: []string{"X-Forwarded-For"},
+		OutputFlags:          log.LstdFlags,
+	})
+
 	if verbose {
-		app = logger.New(logger.Options{
-			Prefix:               prefix,
-			RemoteAddressHeaders: []string{"X-Forwarded-For"},
-			OutputFlags:          log.LstdFlags,
-		}).Handler(app)
+		app = l.Handler(app)
 	}
 
-	stdLog.Printf("HTTP server is listening on port %s, verbose = %v, log headers = %v\n", port, verbose, headers)
-	stdLog.Fatalln("ListenAndServe:", http.ListenAndServe(port, app))
+	l.Printf("HTTP server is listening on port %s, verbose = %v, log headers = %v\n", port, verbose, headers)
+	l.Fatalln("ListenAndServe:", http.ListenAndServe(port, app))
 }

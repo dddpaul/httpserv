@@ -21,14 +21,14 @@ Usage:
 httpserv [OPTIONS]
   -prefix string
         Logging prefix (default "httpserv")
-  -headers
-        Print request headers
   -message string
         Server response (default "HTTP OK")
   -port string
         Port to listen (prepended by colon), i.e. :8080 (default ":8080")
   -verbose
         Print request details
+  -headers
+        Print request headers
 ```
 
 Per request logging may be enabled by setting `X-Headers-Logging-Enabled` header, like:
