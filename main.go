@@ -29,7 +29,9 @@ var app http.Handler = http.HandlerFunc(func(w http.ResponseWriter, req *http.Re
 		buf.Truncate(buf.Len() - 2)
 		stdLog.Print(buf.String())
 	}
-	w.Write([]byte(message))
+	if _, err := w.Write([]byte(message)); err != nil {
+		stdLog.Println(err)
+	}
 })
 
 func main() {
